@@ -1,0 +1,48 @@
+buildscript {
+	dependencies {
+		classpath group: 'de.dynamicfiles.projects.gradle.plugins', name: 'javafx-gradle-plugin', version: '8.8.2'
+	}
+
+	repositories {
+		mavenLocal()
+		mavenCentral()
+	}
+}
+
+plugins {
+	id 'java'
+	id 'eclipse'
+	id 'idea'
+}
+
+apply plugin: 'javafx-gradle-plugin'
+
+group = 'redempt'
+version = '0.1.0-alpha'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+eclipse.project {
+	natures 'org.eclipse.buildship.core.gradleprojectnature'
+	natures 'org.springsource.ide.eclipse.gradle.core.nature'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile 'com.1stleg:jnativehook:2.1.0'
+}
+
+jar {
+	from {
+		configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+	}
+}
+
+jfx {
+	mainClass = 'redempt.inputscripter2.Main'
+	vendor = 'Redempt'
+}

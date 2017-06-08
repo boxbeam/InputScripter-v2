@@ -1,0 +1,163 @@
+[Syntax and basics]
+#Variables{
+	Variables can be defined by a name preceded by $.
+	For example, if you want to make a variable named x whose value
+	is 5, you'd do '$x = 5'. You can also perform math in variable
+	assignments, and also some functions. If at any time you want
+	to substitute the value of the variable into an expression,
+	you use its name preceded by a $ again. To calculate x + 5,
+	for any evaluating function or variable assignment, you
+	would use the expression '$x + 5', which would evaluate
+	to 10 given that x is 5.
+}
+#Operations{
+	There are four operations currently implemented, which are the
+	four basic operations in mathematics: +, -, *, /, which
+	represent addition, subtraction, multiplication, and division
+	respectively. These all perform what you'd expect, and should
+	be used as 'value1 operation value2', meaning that if you want
+	to divide 2 by 1, you would do '2 / 1'. This implementation of
+	math only works with whole numbers.
+}
+#Functions{
+	Functions are the meat of your script. They perform an action
+	given arguments which you specify. Some can evaluate math
+	and variables, while others cannot. The list of functions
+	can be found in the Functions section of documentation. A
+	function should be used by typing its name folowed by a space,
+	and then arguments for it. Arguments determine the behavior of
+	a function. For example, 'print Hi' will output 'Hi' to console.
+	Note that the 'print' function does NOT type the arguments
+	given to it, it logs them to console. Its primary use is
+	debugging.
+}
+#System variables{
+	System variables are variables which act differently from
+	standard ones defined by you. These variables are defined
+	before the script runs, and do special things upon setting
+	or getting their values. One example is $mousex, which is
+	the X coordinate of the mouse cursor. Setting it will move
+	the mouse to the specified X coordinate, and getting it
+	will give you the current X coordinate of the mouse cursor.
+}
+#Evaluations
+	Evaluations are simple. An evaluation takes an expression
+	and substitutes variables, then performs math if applicable.
+	For example, evaluating '$x hi' would replace '$x' with the
+	value of the variable x. If the value of the variable x is
+	'q', it would evaluate to 'q hi'. When it is stated
+	elsewhere in the docs that a function evaluates arguments,
+	this means that the function will substitute variables
+	and perform math where applicable on the input before
+	performing whatever action the function performs. 
+
+[System variables]
+#$clipboard{
+	This system variable represents the clipboard, which is
+	what is copied to with ctrl + c and pasted from with
+	ctrl + v. Setting it will set the system clipboard.
+}
+#$mousex and $mousey{
+	These variables represent the X and Y positions of
+	the mouse cursor, respectively. Setting them will
+	move the mouse.
+}
+#$terminated{
+	If a script is still executing when the key combo is pressed
+	again, the script will be terminated. Termination forces the
+	script to stop gracefully by disallowing backtracking, or
+	loops. This variable will be either 'true' or 'false', its
+	value will be 'true' if the script has been terminated and
+	'false' otherwise. This variable can only be modified to
+	'true', any other value the script attempts to set it to
+	will have no effect. Setting it to 'true' will terminate the
+	script.
+}
+#$random{
+	This variable will give a random value between 0 and 100 every
+	time it is accessed. It cannot be set, since it has no actual
+	value.
+}
+#$indicator{
+	Set to 'none' by default, this variable, when set to a value other
+	than 'none', will cause an indicator to appear in the top left
+	corner of the screen to show that this script is running, with
+	the value of the variable being what's displayed on the indicator.
+	Setting the value to 'none' will remove the indicator.
+}
+[Functions]
+#print{
+	The print function prints text to the console. This function does
+	not type text into a selected text box, it pipes it to stdout. If
+	you don't know what this means, you don't need to worry about
+	using this function. This function evaluates arguments.
+}
+#wait{
+	The wait function waits a specified number of milliseconds before
+	executing the next line in the script. This function evaluates
+	arguments.
+}
+#scroll{
+	The scroll function will simulate scrolling the mouse a specified
+	number of lines.
+}
+#click and unclick{
+	The click function will simulate pressing the specified mouse button
+	(left, right, or middle), while the unclick button will simulate
+	releasing that mouse button.
+}
+#press and unpress{
+	The press function will simulate pressing the specified key on the
+	keyboard ('press a' will press the A key, 'press space' will press
+	the space bar). The unpress function simulates releasing the
+	specified key.
+}
+#break{
+	The break function exits a specified number of code bodies,
+	effectively skipping to the Nth end line after the current line,
+	where N is the specified number of bodies to exit.
+}
+#keypressed{
+	This function will return whether the specified key on the keyboard
+	is being pressed. Its only purpose is to be used in conditionals.
+}
+#mousepressed{
+	This function will return whether the specified button on the mouse
+	(left, right, or middle) is being pressed. Its only purpose is to be
+	used in conditionals.
+}
+
+[Code bodies]
+#Code bodies{
+	Code bodies are sections of code which act differently. There are loops,
+	which will have the same section of code repeat multiple times, and
+	conditionals, which will make sure that a condition is met, otherwise
+	the section of code will be skipped. A code body will start with its name,
+	followed by arguments, then all lines of code in the body and 'end' at the
+	end. Code bodies can be nested, and it is recommended to use indentations
+	to keep your script organized if you use nested code bodies.
+}
+#repeat{
+	The repeat body is defined by 'repeat', and can be followed by a number
+	argument, which is evaluated. If a number argument is not specified,
+	it will repeat until the script is terminated or the loop is broken
+	using the 'break' function. If a number is specified, it will repeat
+	the specified number of times or until the script terminates or the loop
+	is broken.
+}
+#conditionals{
+	Conditionals come in two forms: 'if' and 'ifnot'. The 'if' body will
+	only run the code if the conditional evaluates to true, while the 'ifnot'
+	body will only run the code if the conditional evaluates to false.
+	Conditional evaluations have three operations: =, >, and <. Using the
+	'=' operation will compare two values, text or number, to see if they
+	are the same. If they are, it will evaluate to true. Otherwise, false.
+	The '>' and '<' operations will test if one number value is greater
+	or lesser than another, respectively. You can also use functions for
+	evaluations, though most will always return false. The 'keypressed' and
+	'mousepressed' functions are the only ones which are meant to be used
+	in conditionals. An example of a conditional is 'if 1 = 1', which will
+	always evaluate to true because 1 is equal to 1. An example of checking
+	for whether a key is pressed is 'if keypressed a', which will evaluate
+	to true if the A key is pressed, and false if it is not.
+}
