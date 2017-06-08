@@ -56,7 +56,7 @@ public class GroupList extends Stage {
 		});
 		grid.add(newDir, 0, 0);
 		
-		File file = new File(".");
+		File file = Hotkey.getCurrentDir();
 		int number = 1;
 		for (File f : file.listFiles()) {
 			if (f.isDirectory()) {

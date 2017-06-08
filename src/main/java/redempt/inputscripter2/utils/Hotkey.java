@@ -25,7 +25,7 @@ public class Hotkey {
 		return hotkeys;
 	}
 	
-	private static File getCurrentDir() {
+	public static File getCurrentDir() {
 		try {
 			return new File(Main.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
 		} catch (URISyntaxException e) {
