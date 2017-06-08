@@ -352,6 +352,9 @@ public class ScriptLoader {
 		int lineNumber = 0;
 		int depth = 0;
 		for (String line : lines) {
+			if (line.equals("")) {
+				continue;
+			}
 			line = line.trim();
 			String[] funcsplit = split(line, ' ', false);
 			if (funcsplit.length == 0) {
@@ -541,9 +544,7 @@ public class ScriptLoader {
 				}
 			}
 		}
-		if (!combine.equals("")) {
-			strings.add(combine);
-		}
+		strings.add(combine);
 		return strings.toArray(new String[strings.size()]);
 	}
 	

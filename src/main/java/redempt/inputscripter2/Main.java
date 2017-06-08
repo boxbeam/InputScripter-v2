@@ -65,7 +65,7 @@ public class Main extends Application {
 		stage.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
 			System.out.println("Saving and exiting...");
 			try {
-				Hotkey.save();
+				Hotkey.save(true);
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}

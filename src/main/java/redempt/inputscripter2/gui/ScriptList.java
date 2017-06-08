@@ -1,5 +1,7 @@
 package redempt.inputscripter2.gui;
 
+import java.io.IOException;
+
 import org.jnativehook.keyboard.NativeKeyEvent;
 
 import javafx.scene.Scene;
@@ -61,6 +63,11 @@ public class ScriptList extends Stage {
 					if (action.getText().equals("Script")) {
 						new ScriptEditor(hotkey.getScript().getSource(), hotkey.getKeyCombo()).addEventHandler(WindowEvent.WINDOW_HIDDEN, closed -> {
 							refresh();
+							try {
+								Hotkey.save(false);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 						});
 					}
 					if (action.getText().equals("Keybind")) {
@@ -68,6 +75,11 @@ public class ScriptList extends Stage {
 							hotkey.unregister();
 							new Hotkey(keybind, hotkey.getScript());
 							refresh();
+							try {
+								Hotkey.save(false);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
 						});
 					}
 					if (action.getText().equals("Delete")) {
@@ -81,6 +93,11 @@ public class ScriptList extends Stage {
 							if (buttonType.equals(ButtonType.YES)) {
 								hotkey.unregister();
 								refresh();
+								try {
+									Hotkey.save(false);
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
 							}
 						});
 					}

@@ -35,12 +35,12 @@ public class Hotkey {
 	}
 	
 	public static void setDir(String dir) throws IOException {
-		save();
+		save(true);
 		Hotkey.dir = dir;
 		load();
 	}
 	
-	public static void save() throws IOException {
+	public static void save(boolean clear) throws IOException {
 		File file = new File(getCurrentDir(), dir);
 		if (!file.exists()) {
 			file.mkdirs();
@@ -59,10 +59,12 @@ public class Hotkey {
 			writer.close();
 			number++;
 		}
-		for (Hotkey hotkey : hotkeys) {
-			hotkey.unregister();
+		if (clear) {
+			for (Hotkey hotkey : hotkeys) {
+				hotkey.unregister();
+			}
+			hotkeys.clear();
 		}
-		hotkeys.clear();
 	}
 	
 	public static void load() throws IOException {
