@@ -49,7 +49,7 @@ public class GroupList extends Stage {
 			dialog.setHeaderText("New group");
 			dialog.setContentText("Enter the name for the new group:");
 			dialog.showAndWait().ifPresent(text -> {
-				File newGroup = new File(text.replace(".", "").replace("/", "").replace("\\", ""));
+				File newGroup = new File(Hotkey.getCurrentDir(), text.replace(".", "").replace("/", "").replace("\\", ""));
 				newGroup.mkdirs();
 				refresh();
 			});
