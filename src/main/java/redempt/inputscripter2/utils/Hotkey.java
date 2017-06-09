@@ -16,6 +16,7 @@ public class Hotkey {
 	
 	private static List<Hotkey> hotkeys = new CopyOnWriteArrayList<>();
 	private static String dir = "default";
+	private long last = 0;
 	
 	private Runnable action;
 	private KeyCombo keyCombo;
@@ -99,6 +100,10 @@ public class Hotkey {
 		this.script = script;
 		action = () -> {
 			if (keybind.isPressed()) {
+				if (System.currentTimeMillis() - last < 100) {
+					return;
+				}
+				last = System.currentTimeMillis();
 				if (script.isRunning()) {
 					script.terminate();
 				} else {
