@@ -42,7 +42,6 @@ public class ScriptLoader {
 	private Robot robot;
 	public Map<String, Function> functions = new HashMap<>();
 	public Map<String, BodyDefinition> bodies = new HashMap<>();
-	private Script currentScript = null;
 	
 	public ScriptLoader() {
 		registerFunctions();
@@ -52,10 +51,6 @@ public class ScriptLoader {
 		} catch (AWTException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public Script getCurrentScript() {
-		return currentScript;
 	}
 	
 	private void registerBodies() {
@@ -429,6 +424,7 @@ public class ScriptLoader {
 		if (!expression.contains("+") && !expression.contains("-") && !expression.contains("/") && !expression.contains("*")) {
 			return expression;
 		}
+		expression = expression.replace(" - ", " -- ");
 		expression = expression.replace(" ", "");
 		String[] plusSplit = expression.split("\\+");
 		if (plusSplit.length > 1) {
@@ -436,7 +432,6 @@ public class ScriptLoader {
 			int second = Integer.parseInt(plusSplit[1].trim().replace(" ", "").replace("~", "-"));
 			expression = String.valueOf(first + second);
 		}
-		expression = expression.replace(" - ", " -- ");
 		String[] minusSplit = expression.split("\\-\\-");
 		if (minusSplit.length > 1) {
 			int first = Integer.parseInt(minusSplit[0]);

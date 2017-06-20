@@ -77,6 +77,7 @@ public class Script {
 				instructions[lineNumber].run(this);
 			} catch (Exception e) {
 				System.out.println("Error on line " + lineNumber + ": " + e.getClass().getSimpleName());
+				e.printStackTrace();
 				kill();
 			}
 			lineNumber++;
