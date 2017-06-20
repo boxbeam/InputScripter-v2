@@ -345,7 +345,6 @@ public class ScriptLoader {
 		registerSystemVariables(variables);
 		Instruction[] instructions = new Instruction[lines.length];
 		int lineNumber = 0;
-		int depth = 0;
 		for (String line : lines) {
 			if (line.equals("")) {
 				continue;
@@ -364,34 +363,24 @@ public class ScriptLoader {
 				}
 				instructions[lineNumber] = new RunFunction(function, combine);
 			}
-			bodyLoop:
-			for (String bodyName : bodies.keySet()) {
-				if (line.startsWith(bodyName)) {
-					String args = line.replaceAll("^" + bodyName, "").trim();
-					int startingDepth = depth;
-					depth++;
-					int recursedDepth = depth;
-					int startLine = lineNumber;
-					for (int i = startLine + 1; i < lines.length; i++) {
-						for (String bodyNameRecursed : bodies.keySet()) {
-							if (lines[i].startsWith(bodyNameRecursed)) {
-								recursedDepth++;
-							}
-						}
-						if (lines[i].equals("end")) {
-							recursedDepth--;
-							if (recursedDepth == startingDepth) {
-								Body body = bodies.get(bodyName).getBody();
-								instructions[startLine] = new StartBody(body, startLine, i, args);
-								instructions[i] = new EndBody(body, startLine, i);
-								break bodyLoop;
-							}
+			BodyDefinition bodyDef = bodies.get(funcname);
+			findBody:
+			if (bodyDef != null) {
+				Body body = bodyDef.getBody();
+				int depth = 1;
+				for (int pos = lineNumber + 1; pos < lines.length; pos++) {
+					if (lines[pos].trim().equals("end")) {
+						depth--;
+						if (depth == 0) {
+							instructions[lineNumber] = new StartBody(body, lineNumber, pos, line.replace(funcname, "").trim());
+							instructions[pos] = new EndBody(body, lineNumber, pos);
+							break findBody;
 						}
 					}
+					if (bodies.get(lines[pos].trim().split(" ")[0]) != null) {
+						depth++;
+					}
 				}
-			}
-			if (line.equals("end")) {
-				depth--;
 			}
 			if (line.startsWith("$")) {
 				String var = line.replaceAll("^\\$", "").split("=")[0].trim();

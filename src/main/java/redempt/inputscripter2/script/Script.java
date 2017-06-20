@@ -53,6 +53,10 @@ public class Script {
 	
 	public void kill() {
 		lineNumber = instructions.length + 1;
+		if (indicator != null) {
+			indicator.dispose();
+		}
+		indicator = null;
 	}
 	
 	public void terminate() {
