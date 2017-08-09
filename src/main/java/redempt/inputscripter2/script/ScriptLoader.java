@@ -27,6 +27,7 @@ import redempt.inputscripter2.script.body.If;
 import redempt.inputscripter2.script.body.Ifnot;
 import redempt.inputscripter2.script.body.Repeat;
 import redempt.inputscripter2.script.function.Function;
+import redempt.inputscripter2.script.function.UserFunction;
 import redempt.inputscripter2.script.instruction.EndBody;
 import redempt.inputscripter2.script.instruction.Instruction;
 import redempt.inputscripter2.script.instruction.RunFunction;
@@ -40,11 +41,9 @@ import redempt.inputscripter2.utils.MouseListener;
 public class ScriptLoader {
 	
 	private Robot robot;
-	public Map<String, Function> functions = new HashMap<>();
 	public Map<String, BodyDefinition> bodies = new HashMap<>();
 	
 	public ScriptLoader() {
-		registerFunctions();
 		registerBodies();
 		try {
 			robot = new Robot();
@@ -78,9 +77,17 @@ public class ScriptLoader {
 			}
 			
 		});
+		bodies.put("function", new BodyDefinition() {
+
+			@Override
+			public Body getBody() {
+				return new UserFunction();
+			}
+			
+		});
 	}
 	
-	private void registerFunctions() {
+	public void registerFunctions(Map<String, Function> functions) {
 		functions.put("print", new Function() {
 
 			@Override
@@ -355,13 +362,12 @@ public class ScriptLoader {
 				continue;
 			}
 			String funcname = funcsplit[0];
-			Function function = functions.get(funcname);
-			if (function != null) {
-				String combine = "";
-				for (int i = 1; i < funcsplit.length; i++) {
-					combine += funcsplit[i] + " ";
-				}
-				instructions[lineNumber] = new RunFunction(function, combine);
+			String combine = "";
+			for (int i = 1; i < funcsplit.length; i++) {
+				combine += funcsplit[i] + " ";
+			}
+			if (instructions[lineNumber] == null) {
+				instructions[lineNumber] = new RunFunction(funcname, combine);
 			}
 			BodyDefinition bodyDef = bodies.get(funcname);
 			findBody:
@@ -372,8 +378,9 @@ public class ScriptLoader {
 					if (lines[pos].trim().equals("end")) {
 						depth--;
 						if (depth == 0) {
-							instructions[lineNumber] = new StartBody(body, lineNumber, pos, line.replace(funcname, "").trim());
-							instructions[pos] = new EndBody(body, lineNumber, pos);
+							String args = line.replace(funcname, "").trim();	
+							instructions[lineNumber] = new StartBody(body, lineNumber, pos, args);
+							instructions[pos] = new EndBody(body, lineNumber, pos, args);
 							break findBody;
 						}
 					}
@@ -394,7 +401,9 @@ public class ScriptLoader {
 			}
 			lineNumber++;
 		}
-		return new Script(this, instructions, variables, source);
+		Map<String, Function> functions = new HashMap<>();
+		registerFunctions(functions);
+		return new Script(this, instructions, variables, functions, source);
 	}
 	
 	public String eval(Script script, String expression) {
@@ -484,7 +493,7 @@ public class ScriptLoader {
 			return false;
 		}
 		String funcname = expression.split(" ")[0];
-		Function function = functions.get(funcname);
+		Function function = script.functions.get(funcname);
 		if (function != null) {
 			String args = expression.replace(funcname, "");
 			return function.run(script, args);

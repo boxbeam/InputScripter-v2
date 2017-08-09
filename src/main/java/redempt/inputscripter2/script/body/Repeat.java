@@ -9,14 +9,14 @@ public class Repeat implements Body {
 	@Override
 	public void start(Script script, int startLine, int endLine, String args) {
 		try {
-			times = Integer.parseInt(script.getHandler().eval(script, args));
+			times = Integer.parseInt(script.getLoader().eval(script, args));
 		} catch (NumberFormatException e) {
 			times = -1;
 		}
 	}
 
 	@Override
-	public void end(Script script, int startLine, int endLine) {
+	public void end(Script script, int startLine, int endLine, String args) {
 		if (times > 0) {
 			times--;
 		}

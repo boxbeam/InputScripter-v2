@@ -20,7 +20,12 @@ import redempt.inputscripter2.utils.KeyCombo;
 
 public class ScriptEditor extends Stage {
 	
+	private String initial = "";
+	
 	public ScriptEditor(String string, KeyCombo keybind) {
+		if (string != null) {
+			initial = string;
+		}
 		ScrollPane pane = new ScrollPane();
 		pane.setFitToHeight(true);
 		pane.setFitToWidth(true);
@@ -87,6 +92,10 @@ public class ScriptEditor extends Stage {
 		pane.setContent(area);
 		
 		this.addEventHandler(WindowEvent.WINDOW_CLOSE_REQUEST, event -> {
+			if (initial.equals(area.getText())) {
+				ScriptEditor.this.close();
+				return;
+			}
 			area.setEditable(false);
 			event.consume();
 			Alert alert = new Alert(AlertType.CONFIRMATION);

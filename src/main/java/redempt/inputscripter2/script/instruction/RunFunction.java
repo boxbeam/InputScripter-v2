@@ -5,17 +5,23 @@ import redempt.inputscripter2.script.function.Function;
 
 public class RunFunction implements Instruction {
 	
-	private Function function;
+	private String function;
+	private Function func;
 	private String args;
 	
-	public RunFunction(Function function, String args) {
-		this.function = function;
+	public RunFunction(String function, String args) {
+		this.function = function.trim();
 		this.args = args;
 	}
 
 	@Override
 	public void run(Script script) {
-		function.run(script, args.trim());
+		if (func == null) {
+			if ((func = script.functions.get(function)) == null) {
+				return;
+			}
+		}
+		func.run(script, args.trim());
 	}
 	
 }

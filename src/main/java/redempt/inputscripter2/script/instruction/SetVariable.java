@@ -15,7 +15,7 @@ public class SetVariable implements Instruction {
 
 	@Override
 	public void run(Script script) {
-		target.set(script, script.getHandler().eval(script, value));
+		target.set(script, script.getLoader().eval(script, value));
 	}
 	
 }

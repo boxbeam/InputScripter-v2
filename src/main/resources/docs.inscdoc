@@ -119,7 +119,8 @@
 }
 #keypressed{
 	This function will return whether the specified key on the keyboard
-	is being pressed. Its only purpose is to be used in conditionals.
+	is being pressed. Its only purpose is to be used in I defined a function called
+	'foo', I can have a line that conditionals.
 }
 #mousepressed{
 	This function will return whether the specified button on the mouse
@@ -145,7 +146,7 @@
 	the specified number of times or until the script terminates or the loop
 	is broken.
 }
-#conditionals{
+#Conditionals{
 	Conditionals come in two forms: 'if' and 'ifnot'. The 'if' body will
 	only run the code if the conditional evaluates to true, while the 'ifnot'
 	body will only run the code if the conditional evaluates to false.
@@ -160,4 +161,18 @@
 	always evaluate to true because 1 is equal to 1. An example of checking
 	for whether a key is pressed is 'if keypressed a', which will evaluate
 	to true if the A key is pressed, and false if it is not.
+}
+#User-defined functions{
+	User-defined functions are a way to shorten your script by eliminating
+	redundancy. To define a function, create a body starting with the
+	keyword 'function' followed by the name of the function. For example,
+	to define a function called 'foo', I would do 'function foo' and treat
+	it like any other code body, with 'end' signifying the end of the body.
+	When the script runs, any code within this body will be skipped, but you
+	can access it later like any other function. If a function called 'foo' is
+	defined, you can just put 'foo' on one line of your script and it will
+	run all the lines in the function that was defined. If you want arguments,
+	you can use the '$args' variable. Any arguments passed to the defined
+	function will be put into the '$args' function when the function is
+	run.
 }
